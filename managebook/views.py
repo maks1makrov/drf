@@ -3,8 +3,8 @@ from django.shortcuts import render
 from rest_framework.generics import ListAPIView, CreateAPIView, DestroyAPIView, UpdateAPIView
 from rest_framework.response import Response
 
-from managebook.models import Book
-from managebook.serialize import BookSerializer
+from managebook.models import Book, Comment
+from managebook.serialize import BookSerializer, CommentSerializer
 
 
 class ListBook(ListAPIView):
@@ -31,3 +31,12 @@ class DestroyBook(DestroyAPIView):
     lookup_field = 'id'
     def get_queryset(self):
         return Book.objects.all()
+
+class UpdateBook(UpdateAPIView):
+    serializer_class = BookSerializer
+    def get_object(self):
+        return Book.objects.get(id=self.kwargs['id'])
+
+class ListComment(ListAPIView):
+    serializer_class = CommentSerializer
+    queryset = Comment.objects
